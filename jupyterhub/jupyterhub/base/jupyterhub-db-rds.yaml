@@ -1,0 +1,13 @@
+apiVersion: integreatly.org/v1alpha1
+kind: Postgres
+metadata:
+  name: jupyterhub-db-rds
+  namespace: cloud-resource-operator
+  labels:
+    productName: RHODS
+spec:
+  secretRef:
+    name: ${juptyerhub_rds_secret}
+    namespace: ${namespace}
+  tier: development
+  type: managed

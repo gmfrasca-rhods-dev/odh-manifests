@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - jupyterhub-configmap.yaml
 - jupyterhub-secret.yaml
+- jupyterhub-db-rds.yaml
 - jupyterhub-dc.yaml
 - jupyterhub-service.yaml
 - jupyterhub-serviceaccount.yaml
