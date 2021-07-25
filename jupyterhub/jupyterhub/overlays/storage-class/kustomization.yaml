@@ -6,11 +6,6 @@ bases:
 #resources:
 patchesJson6902:
 - target:
-    kind: PersistentVolumeClaim
-    version: v1
-    name: jupyterhub-db
-  path: jupyterhub-db-pvc.yaml
-- target:
     kind: ConfigMap
     version: v1
     name: jupyterhub-cfg

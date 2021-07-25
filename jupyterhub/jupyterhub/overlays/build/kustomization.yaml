@@ -6,7 +6,6 @@ resources:
 - jupyterhub-imagestream.yaml
 - jupyterhub-img-imagestream.yaml
 - jupyterhub-buildconfig.yaml
-- jupyterhub-db-buildconfig.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
