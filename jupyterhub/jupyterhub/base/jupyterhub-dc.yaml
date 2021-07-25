@@ -32,13 +32,21 @@ spec:
       - env:
         - name: JUPYTERHUB_SERVICE_NAME
           value: jupyterhub
+        - name: JUPYTERHUB_DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: ${jupyterhub_rds_secret}
+              value: user
         - name: JUPYTERHUB_DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $(jupyterhub_secret)
-              key: POSTGRESQL_PASSWORD
+              name: $(jupyterhub_rds_secret)
+              key: password
         - name: JUPYTERHUB_DATABASE_HOST
-          value: jupyterhub-db
+          valueFrom:
+            secretKeyRef:
+              name: ${jupyterhub_rds_secret}
+              value: host
         - name: PROMETHEUS_API_TOKEN
           valueFrom:
             secretKeyRef:
@@ -111,13 +119,21 @@ spec:
       - command:
         - wait-for-database
         env:
+        - name: JUPYTERHUB_DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: ${jupyterhub_rds_secret}
+              value: user
         - name: JUPYTERHUB_DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $(jupyterhub_secret)
-              key: POSTGRESQL_PASSWORD
+              name: $(jupyterhub_rds_secret)
+              key: password
         - name: JUPYTERHUB_DATABASE_HOST
-          value: jupyterhub-db
+          valueFrom:
+            secretKeyRef:
+              name: ${jupyterhub_rds_secret}
+              value: host
         image: quay.io/odh-jupyterhub/jupyterhub-img:v0.3.0
         imagePullPolicy: "Always"
         name: wait-for-database
