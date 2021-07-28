@@ -1,6 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+- jupyterhub-db-role.yaml
+- jupyterhub-db-rolebinding.yaml
 - jupyterhub-configmap.yaml
 - jupyterhub-secret.yaml
 - jupyterhub-db-rds.yaml
@@ -69,5 +71,12 @@ vars:
     apiVersion: v1
   fieldref:
     fieldpath: data.notebook_destination
+- name: jupyterhub_rds_secret
+  objref:
+    kind: ConfigMap
+    name: parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.jupyterhub_rds_secret
 configurations:
 - params.yaml
