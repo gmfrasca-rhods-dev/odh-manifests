@@ -31,6 +31,7 @@ resources:
   - ./serviceaccounts/ml-pipeline-persistenceagent.yaml
   - ./serviceaccounts/ml-pipeline-scheduledworkflow.yaml
   - ./serviceaccounts/ml-pipeline-viewer-crd-service-account.yaml
+  - ./serviceaccounts/ml-pipeline-visualizationserver.yaml
   - ./serviceaccounts/ml-pipeline.yaml
   - ./serviceaccounts/mysql.yaml
   - ./serviceaccounts/pipeline-runner.yaml
@@ -54,6 +55,7 @@ resources:
   - ./deployments/ml-pipeline-persistenceagent.yaml
   - ./deployments/ml-pipeline-scheduledworkflow.yaml
   - ./deployments/ml-pipeline-viewer-crd.yaml
+  - ./deployments/ml-pipeline-visualizationserver.yaml
   - ./deployments/minio.yaml
   - ./deployments/ml-pipeline.yaml
   - ./deployments/mysql.yaml
@@ -61,6 +63,7 @@ resources:
   # Services
   - ./services/metadata-envoy-service.yaml
   - ./services/metadata-grpc-service.yaml
+  - ./services/ml-pipeline-visualizationserver.yaml
   - ./services/ml-pipeline.yaml
   - ./services/mysql.yaml
   - ./services/minio.yaml
@@ -101,6 +104,9 @@ images:
     newTag: 1.1.0
   - name: viewer-crd-controller
     newName: gcr.io/ml-pipeline/viewer-crd-controller
+    newTag: 1.7.0
+  - name: visualization-server
+    newName: gcr.io/ml-pipeline/visualization-server
     newTag: 1.7.0
   - name: api-server
     newName: quay.io/internaldatahub/api-server
