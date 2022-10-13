@@ -10,13 +10,13 @@ Data Science Pipelines is the Open Data Hub's pipeline solution for data scienti
 1. The cluster needs to be OpenShift 4.9 or higher
 2. OpenShift Pipelines 1.7.2 or higher needs to be installed on the cluster
 3. The Open Data Hub operator needs to be installed
-4. The default installation namespace for Data Science Pipelines is `redhat-ods-applications`. This namespace will need to be created. In case you wish to install in a custom location, create it and update the kfdef as documented below.
+4. The default installation namespace for Data Science Pipelines is `odh-applications`. This namespace will need to be created. In case you wish to install in a custom location, create it and update the kfdef as documented below.
 
 ### Installation Steps
 
 1. Ensure that the prerequisites are met.
-2. Apply the kfdef at [kfctl_openshift_ml-pipelines.yaml](https://github.com/opendatahub-io/odh-manifests/blob/master/kfdef/kfctl_openshift_ml-pipelines.yaml). You may need to update the `namespace` field under `metadata` in case you want to deploy in a namespace that isn't `odh-applications`.
-3. To find the url for ML pipelines, you can run the following command.
+2. Apply the kfdef at [kfctl_openshift_ds-pipelines.yaml](https://github.com/opendatahub-io/odh-manifests/blob/master/kfdef/kfctl_openshift_ds-pipelines.yaml). You may need to update the `namespace` field under `metadata` in case you want to deploy in a namespace that isn't `odh-applications`.
+3. To find the url for Data Science pipelines, you can run the following command.
     ```bash
     $ oc get route -n <kdef_namespace> ds-pipeline-ui -o jsonpath='{.spec.host}'
     ```
@@ -37,29 +37,33 @@ This directory contains artifacts for deploying all backend components of Data S
 
 ### Overlays
 
-1. metadata-store-mariadb: This overlay contains artifacts for deploying a MariaDB database. MariaDB is currently the only supported backend for Data Science Pipelines, so if you don't have an existing MySQL database deployed, this overlay needs to be applied.
-2. ds-pipeline-ui: This overlay contains deployment artifacts for the Data Science Pipelines UI. Deploying Data Science Pipelines without this overlay will result in only the backend artifacts being created.
+1. metadata-store-mysql: This overlay contains artifacts for deploying a MySQL database. MySQL is currently the only supported backend for Data Science Pipelines, so if you don't have an existing MySQL database deployed, this overlay needs to be applied.
+2. metadata-store-postgresql: This overlay contains artifacts for deploying a PostgreSQL database. Data Science Pipelines does not currently support PostgreSQL as a backend, so deploying this overlay will not actually modify Data Science Pipelines behaviour.
+3. ds-pipeline-ui: This overlay contains deployment artifacts for the Data Science Pipelines UI. Deploying Data Science Pipelines without this overlay will result in only the backend artifacts being created.
+4. object-store-minio: This overlay contains artifacts for deploying Minio as the Object Store to store Pipelines artifacts.
 
 ### Prometheus
 
-This directory contains the service monitor definition for Data Science Pipelines Pipelines. It is always deployed by base, so this will eventually be moved into the base directory itself.
+This directory contains the service monitor definition for Data Science Pipelines. It is always deployed by base, so this will eventually be moved into the base directory itself.
 
 ## Parameters
 
 You can customize the Data Science Pipelines deployment by injecting custom parameters to change the default deployment. The following parameters can be used:
 
-* **pipeline_install_configuration**: The ConfigMap name that contains the values to install the data Science Pipelines environment. This parameter defaults to `pipeline-install-config` and you can find an example in the [repository](./base/configmaps/pipeline-install-config.yaml).
-* **ml_pipelines_configuration**: The ConfigMap name that contains the values to integrate Data Science Pipelines with the underlying components (Database and Object Store). This parameter defaults to `ds-pipeline-config` and you can find an example in the [repository](./base/configmaps/kfp-tekton-config.yaml).
-* **database_secret**: The secret that contains the credentials for the Data Science Pipelines Databse. It defaults to `mysql-secret` if using the `metadata-store-mysql` overlay.
-* **ml_pipelines_ui_configuration**: The ConfigMap that contains the values to customize UI. It defaults to `ds-pipeline-ui-configmap`.
+* **pipeline_install_configuration**: The ConfigMap name that contains the values to install the Data Science Pipelines environment. This parameter defaults to `pipeline-install-config` and you can find an example in the [repository](./base/configmaps/pipeline-install-config.yaml).
+* **ds_pipelines_configuration**: The ConfigMap name that contains the values to integrate Data Science Pipelines with the underlying components (Database and Object Store). This parameter defaults to `kfp-tekton-config` and you can find an example in the [repository](./base/configmaps/kfp-tekton-config.yaml).
+* **database_secret**: The secret that contains the credentials for the Data Science Pipelines Databse. It defaults to `mysql-secret` if using the `metadata-store-mysql` overlay or `postgresql-secret` if using the `metadata-store-postgresql` overlay.
+* **ds_pipelines_ui_configuration**: The ConfigMap that contains the values to customize UI. It defaults to `ds-pipeline-ui-configmap`.
 
 ## Configuration
+
+* It is possible to configure what S3 storage is being used by Pipeline Runs. Detailed instructions on how to configure this will be added once Minio is moved to an overlay.
 
 ## Usage
 
 ### These instructions will be updated once Data Science Pipelines has a tile available in odh-dashboard
 
-1. Go to the ml-pipelines-ui route.
+1. Go to the ds-pipelines-ui route.
 2. Click on `Pipelines` on the left side.
 3. There will be a `[Demo] flip-coin` Pipeline already available. Click on it.
 4. Click on the blue `Create run` button towards the top of the screen.
