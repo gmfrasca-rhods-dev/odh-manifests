@@ -6,10 +6,6 @@ resources:
   # Build Configs
   - ./buildconfigs/vizualization-server.yaml
 
-  # Configmaps
-  - ./configmaps/ds-pipeline-config.yaml
-  - ./configmaps/pipeline-install-config.yaml
-
   # CustomResourceDefinitions
   - ./customresourcedefinitions/viewers.yaml
   - ./customresourcedefinitions/scheduledworkflows.yaml
